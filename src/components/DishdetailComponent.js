@@ -57,7 +57,7 @@ import {
         <div className="container">
           <div className="row">
             <RenderDish dish = {props.dish}/>
-            <RenderComments  dish = {props.dish.comments} />
+            <RenderComments  comments = {props.dish.comments} />
           </div>
         </div>
       );
