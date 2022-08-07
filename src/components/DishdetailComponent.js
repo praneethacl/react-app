@@ -5,12 +5,13 @@ import {
   CardImgOverlay,
   CardText,
   CardBody,
-  CardTitle,
+  CardTitle, Breadcrumb, BreadcrumbItem
 } from "reactstrap";
+import {Link, useParams } from 'react-router-dom'
 
   function RenderDish({dish}) {
     return (
-      <div className="col-12 col-md-5 m-1">
+      <div>
         <Card>
           <CardImg top src={dish.image} alt={dish.name} />
           <CardBody>
@@ -25,7 +26,7 @@ import {
   function RenderComments({comments}) {
     if (comments != null) {
       return (
-        <div className="col-12 col-md-5 m-1">
+        <div >
           <h4>Comments</h4>
           <ul className="list-unstyled">
             {comments.map((comment) => {
@@ -52,15 +53,34 @@ import {
   }
 
   const Dishdetail = (props) => {
-    if (props.dish != null) {
+    let params  = useParams();
+    console.log(params);
+    const dishForDishDetail = props.dishes.filter((dish) => dish.id === parseInt(params.dishId,10))[0]
+    const commentForDishDetail = props.comments.filter((comment) => comment.dishId === parseInt(params.dishId,10))
+    console.log(dishForDishDetail, commentForDishDetail);
+    if (dishForDishDetail != null) {
       return (
         <div className="container">
           <div className="row">
-            <RenderDish dish = {props.dish}/>
-            <RenderComments  comments = {props.dish.comments} />
+              <Breadcrumb>
+                  <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                  <BreadcrumbItem active>{dishForDishDetail.name}</BreadcrumbItem>
+              </Breadcrumb>
+              <div className="col-12">
+                  <h3>{dishForDishDetail.name}</h3>
+                  <hr />
+              </div>                
+          </div>
+          <div className="row">
+              <div className="col-12 col-md-5 m-1">
+                  <RenderDish dish={dishForDishDetail} />
+              </div>
+              <div className="col-12 col-md-5 m-1">
+                  <RenderComments comments={commentForDishDetail} />
+              </div>
           </div>
         </div>
-      );
+      )
     } else {
       return <div></div>;
     }

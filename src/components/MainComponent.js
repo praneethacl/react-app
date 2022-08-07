@@ -42,6 +42,17 @@ class Main extends Component {
     const dishProp = this.state.dishes.filter((dish) => dish.featured)[0];
     const leaderProp = this.state.leaders.filter((leader) => leader.featured)[0];
     const promotionProp = this.state.promotions.filter((promo) => promo.featured)[0];
+    
+    const DishWithId = ({match}) => {
+      return(
+          <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+            comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+      );
+    };
+
+    // const dishForDishDetail = this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]
+    // const commentForDishDetail = this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))
+    
     return ( 
       <div>
         {/* <Navbar dark color="primary">
@@ -61,6 +72,7 @@ class Main extends Component {
               leader={leaderProp}
             />}/>
             <Route exact path='/menu' element={<Menu dishes={this.state.dishes} />}/>
+            <Route path="/menu/:dishId" element={<DishDetail dishes = {this.state.dishes} comments = {this.state.comments}/>}/>
             <Route exact path="/contactus" element={<Contact/>} />
             <Route path='*' element={<Navigate to="/home" replace />}/>
             {/* // <Redirect to="/home"/> */}
