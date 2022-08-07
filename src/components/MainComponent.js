@@ -4,17 +4,23 @@ import Menu from './MenuComponent';
 import Home from './HomeComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { DISHES } from '../shared/dishes';
-import { BrowserRouter ,Routes, Route } from 'react-router-dom';
+import { COMMENTS } from '../shared/comments';
+import { LEADERS } from '../shared/leaders';
+import { PROMOTIONS } from '../shared/promotions';
+import { BrowserRouter ,Routes, Route, Navigate} from 'react-router-dom';
 
 class Main extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        dishes: DISHES,
-        selectedDish: null
+      dishes: DISHES,
+      comments: COMMENTS,
+      promotions: PROMOTIONS,
+      leaders: LEADERS
     };
   }
 
@@ -33,6 +39,9 @@ class Main extends Component {
         <Menu/>;
       
     }
+    const dishProp = this.state.dishes.filter((dish) => dish.featured)[0];
+    const leaderProp = this.state.leaders.filter((leader) => leader.featured)[0];
+    const promotionProp = this.state.promotions.filter((promo) => promo.featured)[0];
     return ( 
       <div>
         {/* <Navbar dark color="primary">
@@ -46,9 +55,15 @@ class Main extends Component {
         {/* <BrowserRouter> */}
           <Routes>
             
-            <Route path='/home' element={<Home/>}/>
+            <Route path='/home' element={<Home 
+              dish= {dishProp}
+              promotion={promotionProp}
+              leader={leaderProp}
+            />}/>
             <Route exact path='/menu' element={<Menu dishes={this.state.dishes} />}/>
-            <Route path='*' element={<Home/>}/>
+            <Route exact path="/contactus" element={<Contact/>} />
+            <Route path='*' element={<Navigate to="/home" replace />}/>
+            {/* // <Redirect to="/home"/> */}
           </Routes>
         {/* </BrowserRouter> */}
         
